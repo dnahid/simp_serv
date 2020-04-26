@@ -1,0 +1,8 @@
+{
+  "name": "simp_serv",
+  "version": "1.0.0",
+  "description": "Simple server to check ansible configuration.",
+  "main": "index.js",
+  "author": "Nahidul Islam <nahidul.islam.cs@gmail.com>",
+  "license": "MIT"
+}
