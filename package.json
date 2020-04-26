@@ -4,5 +4,12 @@
   "description": "Simple server to check ansible configuration.",
   "main": "index.js",
   "author": "Nahidul Islam <nahidul.islam.cs@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
 }
