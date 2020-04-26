@@ -1,2 +1,3 @@
-# simp_serv
+# SimpServ
+
 Simple server to check ansible confuration.
