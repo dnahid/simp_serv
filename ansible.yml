@@ -1,0 +1,11 @@
+---
+- hosts: production
+  remote_user: nahid
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Install pip3 in the server
+      apt: name=python3-pip state=present
+
+    - name: install docker-py in the server
+      pip: name=docker-py
