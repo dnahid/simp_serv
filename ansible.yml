@@ -1,7 +1,6 @@
 ---
 - hosts: inv_1
-  become: true
-
+  become: yes
   vars:
     - homeDir: /home/ubuntu
     - appDir: applications
@@ -33,10 +32,14 @@
       when: git_finished is succeeded
 
     - name: Stop APP
+      become: true
+      become_user: nahid
       command: pm2 stop simp_serv chdir={{homeDir}}/{{appDir}}/src
       ignore_errors: yes
 
     - name: Start APP
+      become: true
+      become_user: nahid
       command: pm2 start index.js --name simp_serv chdir={{homeDir}}/{{appDir}}/src
       ignore_errors: yes
       when: npm_finished is succeeded
