@@ -28,7 +28,7 @@
       copy: src={{privateKey}} dest={{homeDir}} mode=0600
 
     - name: Git Clone Repo
-      git: repo=git@github.com:{{account}}/{{repo}}.git dest={{homeDir}}/{{appDir}} update=yes force=yes accept_hostkey=yes key_file={{homeDir}}/id_rsa
+      git: repo=git@github.com:{{account}}/{{repo}}.git dest={{homeDir}}/{{appDir}} update=yes force=yes accept_hostkey=yes key_file={{homeDir}}/id_rsa version=app-on-vm
       register: git_finished
 
     - name: Running NPM install
