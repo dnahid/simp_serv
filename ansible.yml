@@ -3,37 +3,42 @@
   remote_user: nahid
   become: yes
   become_method: sudo
+  vars:
+    - homeDir: /home/ubuntu
+    - appDir: applications2
+    - repo: simp_serv
+    - account: dnahid
+    - privateKey: /Users/nahid/.ssh/id_rsa
+
   tasks:
     - name: Install pip3 in the server
       apt: name=python3-pip state=present
-    - name: Add Docker GPG apt Key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
 
-    - name: Add Docker Repository
-      apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu bionic stable
-        state: present
-
-    - name: Update apt and install docker-ce
-      apt: update_cache=yes name=docker-ce state=latest
     - name: install docker in the server
       pip:
         name: docker
         executable: pip3
+
     - name: install docker compose in the server
       pip:
         name: docker-compose
         executable: pip3
+
+    - name: Copy Private Key
+      copy: src={{privateKey}} dest={{homeDir}} mode=0600
+
+    - name: Git Clone Repo
+      git: repo=git@github.com:{{account}}/{{repo}}.git dest={{homeDir}}/{{appDir}} update=yes force=yes accept_hostkey=yes key_file={{homeDir}}/id_rsa version=master
+      register: git_finished
+
     - name: Generate docker image from dockerfile
       docker_image:
         name: nodeapp
-        path: .
+        path: home/ubuntu/applications2
         state: build
 
     - name: Run the application container
       docker_container:
         image: nodeapp:latest
-        path: .
+        path: home/ubuntu/applications2
         state: running
