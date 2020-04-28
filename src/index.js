@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3333;
 
 app.get("/", (req, res) => {
   res.send("got to /demo for getting you are alive me");
