@@ -1,22 +1,18 @@
 ---
 - hosts: inv_1
-  sudo: yes
+  become: true
 
   vars:
     - homeDir: /home/ubuntu
     - appDir: applications
     - repo: simp_serv
     - account: dnahid
-    - privateKey: /home/nahid/.ssh/id_rsa
+    - privateKey: /Users/nahid/.ssh/id_rsa
 
   tasks:
     - name: Install necessary packages
-      apt: name={{ item }} update_cache=yes state=latest
-      with_items:
-        - build-essential
-        - npm
-        - nodejs
-        - git
+      apt:
+        name: ["build-essential", "nodejs", "git", "curl"]
 
     - name: Install pm2 to run node application
       npm: name=pm2 global=yes production=yes
@@ -32,17 +28,15 @@
       register: git_finished
 
     - name: Running NPM install
-      npm: path={{homeDir}}/{{appDir}}/backened
+      npm: path={{homeDir}}/{{appDir}}
       register: npm_finished
-      when: git_finished.changed
+      when: git_finished is succeeded
 
     - name: Stop APP
-      sudo_user: ubuntu
-      command: pm2 stop app chdir={{homeDir}}/{{appDir}}/backened
+      command: pm2 stop simp_serv chdir={{homeDir}}/{{appDir}}/src
       ignore_errors: yes
 
     - name: Start APP
-      sudo_user: ubuntu
-      command: pm2 start index.js --name app chdir={{homeDir}}/{{appDir}}/backened
+      command: pm2 start index.js --name simp_serv chdir={{homeDir}}/{{appDir}}/src
       ignore_errors: yes
-      when: npm_finished.changed
+      when: npm_finished is succeeded
