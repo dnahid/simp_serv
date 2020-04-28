@@ -34,11 +34,11 @@
     - name: Generate docker image from dockerfile
       docker_image:
         name: nodeapp
-        path: home/ubuntu/applications2
+        path: /home/ubuntu/applications2
         state: build
 
     - name: Run the application container
       docker_container:
         image: nodeapp:latest
-        path: home/ubuntu/applications2
+        path: /home/ubuntu/applications2
         state: running
